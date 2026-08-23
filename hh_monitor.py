@@ -112,6 +112,17 @@ def fetch_vacancies() -> list:
         try:
             resp = requests.get(HH_API_URL, params=params, headers=headers, timeout=20)
             resp.raise_for_status()
+        except requests.HTTPError as exc:
+            body_snippet = ""
+            server_header = ""
+            if exc.response is not None:
+                body_snippet = exc.response.text[:500]
+                server_header = exc.response.headers.get("Server", "noma'lum")
+            log.error(
+                "hh API xato qaytardi: %s | Server: %s | Javob tanasi: %s",
+                exc, server_header, body_snippet,
+            )
+            break
         except requests.RequestException as exc:
             log.error("hh API'ga so'rov yuborishda xatolik: %s", exc)
             break
