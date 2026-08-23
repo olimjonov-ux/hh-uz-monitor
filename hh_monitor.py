@@ -39,7 +39,7 @@ KEYWORDS = [
 # hh API'dagi hudud kodi: 2759 = Toshkent shahri, 97 = butun O'zbekiston.
 # GitHub repo -> Settings -> Secrets and variables -> Actions -> Variables
 # bo'limida HH_AREA_ID nomli o'zgaruvchi qo'shib, buni qayta sozlash mumkin.
-AREA_ID = os.environ.get("HH_AREA_ID", "2759")
+AREA_ID = os.environ.get("HH_AREA_ID") or "2759"
 
 # Natijalarni hh.uz saytiga tegishli qilib olish uchun
 HH_HOST = "hh.uz"
@@ -93,7 +93,9 @@ def fetch_vacancies() -> list:
     all_items = []
     headers = {
         # hh API tavsiyasiga ko'ra tavsifli User-Agent yuborish tavsiya etiladi
-        "User-Agent": "tashkent-hh-data-jobs-bot/1.0 (+https://github.com/)"
+        "User-Agent": "tashkent-hh-data-jobs-bot/1.0 (+https://github.com/)",
+        "Accept": "application/json",
+        "Accept-Language": "ru,uz;q=0.9,en;q=0.8",
     }
     query = " OR ".join(KEYWORDS)
 
